@@ -7,7 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Space+Mono:wght@400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#0d3d6e 35%,#0e6a90 65%,#0aa5c0 100%);font-family:'Nunito',sans-serif;display:flex;flex-direction:column;align-items:center}
+body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#0d3d6e 35%,#0e6a90 65%,#0aa5c0 100%);font-family:'Nunito',sans-serif;display:flex}
 
 @keyframes sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-3deg)}}
 @keyframes arm-l{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-8deg)}}
@@ -21,15 +21,117 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 @keyframes kpulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
 @keyframes kfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes kspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:260px;flex-shrink:0;
+  background:rgba(5,20,45,0.92);
+  border-right:1px solid rgba(126,232,250,.1);
+  display:flex;flex-direction:column;
+  height:100vh;position:relative;z-index:10;
+  backdrop-filter:blur(12px);
+  transition:width .3s ease;
+}
+.sidebar.collapsed{width:0;overflow:hidden}
+
+.sidebar-header{
+  padding:16px 14px 10px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(126,232,250,.08);
+  flex-shrink:0;
+}
+.sidebar-logo{
+  width:36px;height:36px;flex-shrink:0;
+  animation:bob 3s ease-in-out infinite;
+  filter:drop-shadow(0 2px 6px rgba(126,232,250,.3));
+}
+.sidebar-title{font-size:16px;font-weight:800;color:#fff;flex:1}
+.sidebar-title span{
+  background:linear-gradient(90deg,#7ee8fa,#fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* Bouton nouvelle conversation */
+.btn-new{
+  margin:12px 14px 8px;
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(126,232,250,.15),rgba(126,232,250,.08));
+  border:1px solid rgba(126,232,250,.25);
+  border-radius:12px;padding:10px 14px;
+  color:#7ee8fa;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+  font-family:'Nunito',sans-serif;
+}
+.btn-new:hover{background:linear-gradient(135deg,rgba(126,232,250,.25),rgba(126,232,250,.15));border-color:rgba(126,232,250,.5)}
+.btn-new-icon{font-size:18px;line-height:1}
+
+/* Sections conversations */
+.sidebar-section{flex:1;overflow-y:auto;padding:0 8px}
+.sidebar-section::-webkit-scrollbar{width:3px}
+.sidebar-section::-webkit-scrollbar-track{background:transparent}
+.sidebar-section::-webkit-scrollbar-thumb{background:rgba(126,232,250,.2);border-radius:2px}
+
+.section-label{
+  font-family:'Space Mono',monospace;font-size:8px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(126,232,250,.4);padding:10px 8px 4px;
+}
+
+.conv-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:10px;
+  cursor:pointer;transition:all .2s;
+  color:rgba(200,240,255,.75);font-size:13px;
+  position:relative;group:true;
+  margin-bottom:2px;
+}
+.conv-item:hover{background:rgba(126,232,250,.08);color:#e0f4ff}
+.conv-item.active{background:rgba(126,232,250,.14);color:#fff;border:1px solid rgba(126,232,250,.2)}
+.conv-item-icon{font-size:14px;flex-shrink:0;opacity:0.7}
+.conv-item-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}
+.conv-item-actions{display:none;gap:2px;flex-shrink:0}
+.conv-item:hover .conv-item-actions{display:flex}
+.conv-action-btn{background:none;border:none;color:rgba(200,240,255,.5);cursor:pointer;padding:2px 4px;border-radius:4px;font-size:12px;transition:color .2s}
+.conv-action-btn:hover{color:#ffb0b0}
+.conv-action-btn.fav{color:rgba(255,200,50,.5)}
+.conv-action-btn.fav.active{color:#ffc832}
+
+.sidebar-footer{
+  padding:12px 14px;
+  border-top:1px solid rgba(126,232,250,.08);
+  flex-shrink:0;
+}
+.sidebar-toggle-btn{
+  position:absolute;top:50%;right:-14px;
+  transform:translateY(-50%);
+  width:14px;height:40px;
+  background:rgba(5,20,45,.9);
+  border:1px solid rgba(126,232,250,.15);
+  border-left:none;
+  border-radius:0 6px 6px 0;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:rgba(126,232,250,.5);font-size:10px;
+  transition:all .2s;z-index:20;
+}
+.sidebar-toggle-btn:hover{color:#7ee8fa;background:rgba(10,40,80,.95)}
+
+/* ===== MAIN ===== */
+.main{
+  flex:1;display:flex;flex-direction:column;
+  position:relative;min-width:0;
+}
 
 .waves-wrap{position:fixed;bottom:0;left:0;width:100%;height:130px;pointer-events:none;z-index:0;overflow:hidden}
 .wl{position:absolute;bottom:0;left:0;width:200%;height:100%}
 .wl svg{width:100%;height:100%}
 .wl1{animation:wave1 8s linear infinite;opacity:.5}
 .wl2{animation:wave2 12s linear infinite;opacity:.35}
-.main{width:100%;max-width:680px;height:100vh;display:flex;flex-direction:column;position:relative;z-index:2}
+
+.content{flex:1;display:flex;flex-direction:column;max-width:720px;width:100%;margin:0 auto;position:relative;z-index:2;min-height:0}
+
 .hero{display:flex;align-items:center;gap:16px;padding:18px 24px 12px;flex-shrink:0}
-.kang-wrap{width:100px;height:120px;flex-shrink:0;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(126,232,250,.35))}
+.kang-wrap{width:90px;height:108px;flex-shrink:0;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(126,232,250,.35))}
 .kang-body-group{transform-origin:50% 80%;animation:sway 3s ease-in-out infinite}
 .kang-arm-l{transform-origin:72% 42%;animation:arm-l 3s ease-in-out infinite}
 .kang-arm-r{transform-origin:28% 42%;animation:arm-r 3s ease-in-out infinite}
@@ -37,11 +139,18 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 .kang-ear-l{transform-origin:60% 95%;animation:ear-l 3s ease-in-out infinite}
 .kang-ear-r{transform-origin:40% 95%;animation:ear-r 3s ease-in-out infinite}
 .eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#7ee8fa;opacity:.7;margin-bottom:3px}
-.title{font-size:28px;font-weight:800;color:#fff;text-shadow:0 2px 12px rgba(126,232,250,.4);line-height:1}
+.title{font-size:26px;font-weight:800;color:#fff;text-shadow:0 2px 12px rgba(126,232,250,.4);line-height:1}
 .sub{font-size:11px;color:rgba(200,240,255,.5);margin-top:4px}
 .badge{display:inline-flex;align-items:center;background:rgba(126,232,250,.1);border:1px solid rgba(126,232,250,.2);border-radius:20px;padding:2px 10px;font-size:9px;color:#7ee8fa;margin-top:5px}
+.conv-title-display{font-size:11px;color:rgba(126,232,250,.6);font-family:'Space Mono',monospace;margin-top:4px;font-style:italic}
+
 .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(126,232,250,.3),transparent);flex-shrink:0}
+
 .chat{flex:1;padding:16px 24px 0;display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:0}
+.chat::-webkit-scrollbar{width:4px}
+.chat::-webkit-scrollbar-track{background:transparent}
+.chat::-webkit-scrollbar-thumb{background:rgba(126,232,250,.2);border-radius:2px}
+
 .row-l{display:flex;flex-direction:column;align-items:flex-start;animation:kfade .3s ease forwards}
 .row-r{display:flex;flex-direction:column;align-items:flex-end;animation:kfade .3s ease forwards}
 .lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px;opacity:.45;color:#c8f0ff}
@@ -56,12 +165,14 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 .img-cap{font-size:11px;color:rgba(200,240,255,.4);font-style:italic;margin-top:5px}
 .err{font-size:12px;color:#ffb0b0;text-align:center;padding:6px}
 .sent-img{max-width:200px;border-radius:10px;border:1px solid rgba(126,232,250,.3);margin-bottom:4px;display:block;cursor:zoom-in}
+
 .preview-wrap{display:flex;align-items:center;gap:8px;background:rgba(126,232,250,.08);border:1px solid rgba(126,232,250,.2);border-radius:10px;padding:6px 10px;margin-bottom:6px}
 .preview-wrap.hidden{display:none}
-.preview-img{width:40px;height:40px;object-fit:cover;border-radius:6px}
+.preview-img-thumb{width:40px;height:40px;object-fit:cover;border-radius:6px}
 .preview-name{font-size:11px;color:rgba(200,240,255,.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .preview-remove{background:none;border:none;color:rgba(200,240,255,.5);cursor:pointer;font-size:16px;padding:0 4px}
 .preview-remove:hover{color:#ffb0b0}
+
 .input-area{padding:14px 24px 24px;flex-shrink:0}
 .input-wrap{display:flex;align-items:flex-end;gap:8px;background:rgba(10,40,80,.65);border:1px solid rgba(126,232,250,.25);border-radius:16px;padding:11px 14px;transition:border-color .2s}
 .input-wrap:focus-within{border-color:rgba(126,232,250,.5)}
@@ -74,237 +185,479 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
 .send:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(10,165,192,.6)}
 .send:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
 .hint{text-align:center;margin-top:8px;font-size:10px;color:rgba(126,232,250,.2);letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace}
+
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:1000;cursor:zoom-out;padding:24px}
 .lightbox.hidden{display:none}
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:12px}
+
+/* Mobile sidebar toggle */
+.mobile-toggle{display:none;position:fixed;top:14px;left:14px;z-index:50;background:rgba(5,20,45,.9);border:1px solid rgba(126,232,250,.2);color:#7ee8fa;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:18px;align-items:center;justify-content:center}
+@media(max-width:640px){
+  .sidebar{position:fixed;left:0;top:0;height:100vh;z-index:100;transform:translateX(-100%);transition:transform .3s ease}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .mobile-toggle{display:flex}
+  .sidebar-toggle-btn{display:none}
+}
 </style>
 </head>
 <body>
+
 <div class="waves-wrap">
   <div class="wl wl1"><svg viewBox="0 0 1440 130" preserveAspectRatio="none"><path d="M0,60 C180,95 360,25 540,60 C720,95 900,25 1080,60 C1260,95 1440,25 1440,60 L1440,130 L0,130Z" fill="rgba(126,232,250,0.09)"/></svg></div>
   <div class="wl wl2"><svg viewBox="0 0 1440 130" preserveAspectRatio="none"><path d="M0,80 C200,50 400,110 600,80 C800,50 1000,110 1200,80 C1320,60 1400,90 1440,80 L1440,130 L0,130Z" fill="rgba(10,165,192,0.11)"/></svg></div>
 </div>
-<div class="main">
-  <div class="hero">
-    <div class="kang-wrap">
-      <svg viewBox="0 0 200 240" width="100" height="120" xmlns="http://www.w3.org/2000/svg">
+
+<!-- Mobile toggle -->
+<button class="mobile-toggle" onclick="toggleMobileSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <button class="sidebar-toggle-btn" onclick="toggleSidebar()" id="toggle-btn">◀</button>
+
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <svg viewBox="0 0 200 200" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="kg1" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#F5C56A"/><stop offset="100%" stop-color="#C07018"/></radialGradient>
-          <radialGradient id="kb1" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#FDE9C0"/><stop offset="100%" stop-color="#ECC878"/></radialGradient>
-          <linearGradient id="kg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#50D0FF"/><stop offset="100%" stop-color="#0055AA"/></linearGradient>
-          <linearGradient id="kboard" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FF2200"/><stop offset="50%" stop-color="#FFAA00"/><stop offset="100%" stop-color="#FF2200"/></linearGradient>
+          <radialGradient id="sg1" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#F5C56A"/><stop offset="100%" stop-color="#C07018"/></radialGradient>
+          <linearGradient id="sg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#50D0FF"/><stop offset="100%" stop-color="#0055AA"/></linearGradient>
         </defs>
-        <g class="kang-body-group">
-          <path d="M134 148 Q150 156 157 170 Q153 177 149 170 Q144 160 136 154Z" fill="#C07018"/>
-          <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
-          <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
-          <path d="M63 188 Q56 186 52 191 Q48 196 50 200 Q54 205 62 203 Q70 201 74 195 Q75 189 69 187Z" fill="#B06018"/>
-          <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
-          <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
-          <path d="M137 188 Q144 186 148 191 Q152 196 150 200 Q146 205 138 203 Q130 201 126 195 Q125 189 131 187Z" fill="#B06018"/>
-          <ellipse cx="100" cy="130" rx="34" ry="41" fill="url(#kg1)"/>
-          <ellipse cx="99" cy="133" rx="22" ry="28" fill="url(#kb1)" opacity="0.88"/>
-          <g class="kang-arm-l" style="transform-origin:70px 118px">
-            <path d="M70 118 Q54 106 46 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
-            <path d="M70 118 Q54 106 46 92" stroke="#D48C28" stroke-width="10" stroke-linecap="round" fill="none"/>
-            <ellipse cx="42" cy="87" rx="10" ry="9" fill="#C87828"/>
-            <path d="M35 82 Q31 74 33 69 Q37 68 37 74Z" fill="#C07018"/>
-            <path d="M41 80 Q38 72 41 67 Q45 67 44 73Z" fill="#C07018"/>
-            <path d="M48 81 Q46 73 50 68 Q54 69 52 75Z" fill="#C07018"/>
-          </g>
-          <g class="kang-arm-r" style="transform-origin:130px 118px">
-            <path d="M130 118 Q146 106 154 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
-            <path d="M130 118 Q146 106 154 92" stroke="#D48C28" stroke-width="10" stroke-linecap="round" fill="none"/>
-            <ellipse cx="158" cy="87" rx="10" ry="9" fill="#C87828"/>
-            <path d="M152 81 Q150 74 153 69 Q156 74 155 81Z" fill="#A86018"/>
-            <path d="M158 80 Q156 73 159 68 Q162 73 161 80Z" fill="#A86018"/>
-            <path d="M163 81 Q162 74 166 70 Q168 74 166 81Z" fill="#A86018"/>
-            <path d="M165 89 Q172 87 173 82 Q171 77 165 80Z" fill="#D48C28"/>
-            <path d="M151 83 Q147 75 149 69 Q153 68 153 74Z" fill="#D48C28"/>
-          </g>
-        </g>
-        <g class="kang-head-group" style="transform-origin:100px 95px">
-          <g class="kang-ear-l" style="transform-origin:79px 82px">
-            <path d="M79 82 Q75 65 76 50 Q77 40 80 36 Q83 32 86 34 Q89 37 88 50 Q87 65 84 82Z" fill="#C87828"/>
-            <path d="M80 80 Q77 65 77 52 Q78 43 80 39 Q82 36 85 37 Q87 39 87 51 Q86 65 83 80Z" fill="#F0C070" opacity="0.75"/>
-          </g>
-          <g class="kang-ear-r" style="transform-origin:121px 82px">
-            <path d="M121 82 Q125 65 124 50 Q123 40 120 36 Q117 32 114 34 Q111 37 112 50 Q113 65 116 82Z" fill="#C87828"/>
-            <path d="M120 80 Q123 65 123 52 Q122 43 120 39 Q118 36 115 37 Q113 39 113 51 Q114 65 117 80Z" fill="#F0C070" opacity="0.75"/>
-          </g>
-          <path d="M68 88 Q67 70 74 56 Q82 42 100 40 Q118 38 126 54 Q134 68 132 88 Q130 105 122 114 Q111 122 100 123 Q89 122 78 114 Q68 105 68 88Z" fill="url(#kg1)"/>
-          <path d="M83 98 Q100 94 117 98 Q122 108 116 118 Q108 125 100 126 Q92 125 84 118 Q78 108 83 98Z" fill="url(#kb1)"/>
-          <path d="M93 95 Q100 89 107 95 Q107 103 100 106 Q93 103 93 95Z" fill="#2A1005"/>
-          <path d="M94 96 Q100 91 106 96 Q106 103 100 105 Q94 103 94 96Z" fill="#4A2010"/>
-          <line x1="100" y1="105" x2="100" y2="111" stroke="#7A3808" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M91 113 Q100 119 109 113" stroke="#7A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="84" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
-          <circle cx="85" cy="85" r="5.5" fill="#1A0E00"/>
-          <circle cx="85" cy="85" r="3" fill="#080300"/>
-          <circle cx="87" cy="83" r="2" fill="white" opacity="0.9"/>
-          <ellipse cx="116" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
-          <circle cx="115" cy="85" r="5.5" fill="#1A0E00"/>
-          <circle cx="115" cy="85" r="3" fill="#080300"/>
-          <circle cx="117" cy="83" r="2" fill="white" opacity="0.9"/>
-          <rect x="73" y="79" width="23" height="14" rx="6" fill="#081828" opacity="0.88"/>
-          <rect x="75" y="81" width="19" height="10" rx="5" fill="url(#kg2)" opacity="0.9"/>
-          <path d="M77 84 Q82 81 87 83" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <path d="M96 85 Q100 83 104 85" stroke="#081828" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <rect x="104" y="79" width="23" height="14" rx="6" fill="#081828" opacity="0.88"/>
-          <rect x="106" y="81" width="19" height="10" rx="5" fill="url(#kg2)" opacity="0.9"/>
-          <path d="M108 84 Q113 81 118 83" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <path d="M73 86 Q65 86 62 83" stroke="#081828" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M127 86 Q135 86 138 83" stroke="#081828" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M73 76 Q82 72 91 75" stroke="#6A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M109 75 Q118 72 127 76" stroke="#6A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </g>
-        <ellipse cx="100" cy="218" rx="70" ry="6" fill="rgba(0,0,0,0.18)"/>
-        <path d="M28 208 Q34 196 100 193 Q166 196 172 208 Q164 222 100 224 Q36 222 28 208Z" fill="url(#kboard)"/>
-        <path d="M44 200 Q72 194 100 193 Q128 194 156 200 Q140 197 100 197 Q60 197 44 200Z" fill="rgba(255,255,255,0.2)"/>
-        <path d="M98 224 Q95 231 93 230 Q95 225 98 224Z" fill="#991100"/>
-        <path d="M102 224 Q105 231 107 230 Q105 225 102 224Z" fill="#991100"/>
+        <ellipse cx="100" cy="110" rx="55" ry="65" fill="url(#sg1)"/>
+        <ellipse cx="98" cy="116" rx="34" ry="44" fill="#FDE9C0" opacity="0.85"/>
+        <path d="M68 88 Q67 60 80 42 Q92 24 100 22 Q108 24 120 42 Q133 60 132 88 Q130 112 118 122 Q108 130 100 131 Q92 130 82 122 Q70 112 68 88Z" fill="url(#sg1)"/>
+        <path d="M72 80 Q70 55 80 40 Q88 28 100 26 Q112 28 120 40 Q130 55 128 80" fill="none"/>
+        <path d="M78 72 Q75 48 82 35 Q87 26 100 24 Q113 26 118 35 Q125 48 122 72" fill="#FDE9C0" opacity="0.6"/>
+        <path d="M80 86 Q77 68 79 52 Q81 40 86 34 Q90 28 94 30 Q98 32 96 46 Q94 62 92 80Z" fill="url(#sg1)"/>
+        <path d="M120 86 Q123 68 121 52 Q119 40 114 34 Q110 28 106 30 Q102 32 104 46 Q106 62 108 80Z" fill="url(#sg1)"/>
+        <path d="M82 84 Q79 68 81 54 Q83 43 87 38 Q90 33 93 35 Q96 37 94 50 Q92 64 90 82Z" fill="#F0C070" opacity="0.7"/>
+        <path d="M118 84 Q121 68 119 54 Q117 43 113 38 Q110 33 107 35 Q104 37 106 50 Q108 64 110 82Z" fill="#F0C070" opacity="0.7"/>
+        <ellipse cx="84" cy="94" rx="9" ry="8" fill="white"/>
+        <circle cx="85" cy="95" r="5" fill="#1A0E00"/>
+        <circle cx="87" cy="93" r="2" fill="white" opacity="0.9"/>
+        <ellipse cx="116" cy="94" rx="9" ry="8" fill="white"/>
+        <circle cx="115" cy="95" r="5" fill="#1A0E00"/>
+        <circle cx="117" cy="93" r="2" fill="white" opacity="0.9"/>
+        <rect x="74" y="89" width="22" height="12" rx="5" fill="#081828" opacity="0.88"/>
+        <rect x="76" y="91" width="18" height="8" rx="4" fill="url(#sg2)" opacity="0.9"/>
+        <rect x="104" y="89" width="22" height="12" rx="5" fill="#081828" opacity="0.88"/>
+        <rect x="106" y="91" width="18" height="8" rx="4" fill="url(#sg2)" opacity="0.9"/>
+        <path d="M96 103 Q100 101 104 103" stroke="#081828" stroke-width="2" fill="none"/>
+        <path d="M83 108 Q88 112 94 110 Q98 113 106 110 Q112 112 117 108" stroke="#7A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M77 84 Q83 79 90 82" stroke="#6A3808" stroke-width="1.5" fill="none"/>
+        <path d="M110 82 Q117 79 123 84" stroke="#6A3808" stroke-width="1.5" fill="none"/>
       </svg>
     </div>
-    <div>
-      <div class="eyebrow">IA · surf edition · image gen</div>
-      <div class="title">Kangourou</div>
-      <div class="sub">chat + génération + analyse d'images 🤙</div>
-      <div class="badge">✨ Images gratuites — sans token</div>
-    </div>
+    <div class="sidebar-title"><span>Kangourou</span></div>
   </div>
-  <div class="divider"></div>
-  <div class="chat" id="chat">
-    <div class="row-l">
-      <div class="lbl">🦘 Kangourou</div>
-      <div class="bub ai">Yo ! Je suis Kangourou 🦘 — je peux tchatter, générer des images ET analyser tes photos ! Clique sur 📎 pour envoyer une image 🎨🤙</div>
+
+  <!-- Nouvelle conversation -->
+  <button class="btn-new" onclick="newConversation()">
+    <span class="btn-new-icon">+</span>
+    <span>Nouvelle conversation</span>
+  </button>
+
+  <!-- Liste conversations -->
+  <div class="sidebar-section" id="conv-list">
+    <!-- Favoris -->
+    <div id="favs-section" style="display:none">
+      <div class="section-label">⭐ Favoris</div>
+      <div id="favs-list"></div>
     </div>
+    <!-- Récentes -->
+    <div class="section-label">🕐 Récentes</div>
+    <div id="recent-list"></div>
   </div>
-  <div class="lightbox hidden" id="lb" onclick="this.classList.add('hidden')">
-    <img id="lb-img" src="" alt="">
+
+  <div class="sidebar-footer">
+    <div style="font-size:10px;color:rgba(126,232,250,.25);font-family:'Space Mono',monospace;text-align:center">kangourou-ia.vercel.app</div>
   </div>
-  <div class="input-area">
-    <div class="preview-wrap hidden" id="preview-wrap">
-      <img class="preview-img" id="preview-img" src="" alt="">
-      <span class="preview-name" id="preview-name"></span>
-      <button class="preview-remove" onclick="removeImage()">✕</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="content">
+    <div class="hero">
+      <div class="kang-wrap">
+        <svg viewBox="0 0 200 240" width="90" height="108" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="kg1" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#F5C56A"/><stop offset="100%" stop-color="#C07018"/></radialGradient>
+            <radialGradient id="kb1" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#FDE9C0"/><stop offset="100%" stop-color="#ECC878"/></radialGradient>
+            <linearGradient id="kg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#50D0FF"/><stop offset="100%" stop-color="#0055AA"/></linearGradient>
+            <linearGradient id="kboard" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FF2200"/><stop offset="50%" stop-color="#FFAA00"/><stop offset="100%" stop-color="#FF2200"/></linearGradient>
+          </defs>
+          <g class="kang-body-group">
+            <path d="M134 148 Q150 156 157 170 Q153 177 149 170 Q144 160 136 154Z" fill="#C07018"/>
+            <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M63 188 Q56 186 52 191 Q48 196 50 200 Q54 205 62 203 Q70 201 74 195 Q75 189 69 187Z" fill="#B06018"/>
+            <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
+            <path d="M137 188 Q144 186 148 191 Q152 196 150 200 Q146 205 138 203 Q130 201 126 195 Q125 189 131 187Z" fill="#B06018"/>
+            <ellipse cx="100" cy="130" rx="34" ry="41" fill="url(#kg1)"/>
+            <ellipse cx="99" cy="133" rx="22" ry="28" fill="url(#kb1)" opacity="0.88"/>
+            <g class="kang-arm-l" style="transform-origin:70px 118px">
+              <path d="M70 118 Q54 106 46 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <path d="M70 118 Q54 106 46 92" stroke="#D48C28" stroke-width="10" stroke-linecap="round" fill="none"/>
+              <ellipse cx="42" cy="87" rx="10" ry="9" fill="#C87828"/>
+              <path d="M35 82 Q31 74 33 69 Q37 68 37 74Z" fill="#C07018"/>
+              <path d="M41 80 Q38 72 41 67 Q45 67 44 73Z" fill="#C07018"/>
+              <path d="M48 81 Q46 73 50 68 Q54 69 52 75Z" fill="#C07018"/>
+            </g>
+            <g class="kang-arm-r" style="transform-origin:130px 118px">
+              <path d="M130 118 Q146 106 154 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <path d="M130 118 Q146 106 154 92" stroke="#D48C28" stroke-width="10" stroke-linecap="round" fill="none"/>
+              <ellipse cx="158" cy="87" rx="10" ry="9" fill="#C87828"/>
+              <path d="M152 81 Q150 74 153 69 Q156 74 155 81Z" fill="#A86018"/>
+              <path d="M158 80 Q156 73 159 68 Q162 73 161 80Z" fill="#A86018"/>
+              <path d="M163 81 Q162 74 166 70 Q168 74 166 81Z" fill="#A86018"/>
+              <path d="M165 89 Q172 87 173 82 Q171 77 165 80Z" fill="#D48C28"/>
+              <path d="M151 83 Q147 75 149 69 Q153 68 153 74Z" fill="#D48C28"/>
+            </g>
+          </g>
+          <g class="kang-head-group" style="transform-origin:100px 95px">
+            <g class="kang-ear-l" style="transform-origin:79px 82px">
+              <path d="M79 82 Q75 65 76 50 Q77 40 80 36 Q83 32 86 34 Q89 37 88 50 Q87 65 84 82Z" fill="#C87828"/>
+              <path d="M80 80 Q77 65 77 52 Q78 43 80 39 Q82 36 85 37 Q87 39 87 51 Q86 65 83 80Z" fill="#F0C070" opacity="0.75"/>
+            </g>
+            <g class="kang-ear-r" style="transform-origin:121px 82px">
+              <path d="M121 82 Q125 65 124 50 Q123 40 120 36 Q117 32 114 34 Q111 37 112 50 Q113 65 116 82Z" fill="#C87828"/>
+              <path d="M120 80 Q123 65 123 52 Q122 43 120 39 Q118 36 115 37 Q113 39 113 51 Q114 65 117 80Z" fill="#F0C070" opacity="0.75"/>
+            </g>
+            <path d="M68 88 Q67 70 74 56 Q82 42 100 40 Q118 38 126 54 Q134 68 132 88 Q130 105 122 114 Q111 122 100 123 Q89 122 78 114 Q68 105 68 88Z" fill="url(#kg1)"/>
+            <path d="M83 98 Q100 94 117 98 Q122 108 116 118 Q108 125 100 126 Q92 125 84 118 Q78 108 83 98Z" fill="url(#kb1)"/>
+            <path d="M93 95 Q100 89 107 95 Q107 103 100 106 Q93 103 93 95Z" fill="#2A1005"/>
+            <path d="M94 96 Q100 91 106 96 Q106 103 100 105 Q94 103 94 96Z" fill="#4A2010"/>
+            <line x1="100" y1="105" x2="100" y2="111" stroke="#7A3808" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M91 113 Q100 119 109 113" stroke="#7A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="84" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
+            <circle cx="85" cy="85" r="5.5" fill="#1A0E00"/>
+            <circle cx="85" cy="85" r="3" fill="#080300"/>
+            <circle cx="87" cy="83" r="2" fill="white" opacity="0.9"/>
+            <ellipse cx="116" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
+            <circle cx="115" cy="85" r="5.5" fill="#1A0E00"/>
+            <circle cx="115" cy="85" r="3" fill="#080300"/>
+            <circle cx="117" cy="83" r="2" fill="white" opacity="0.9"/>
+            <rect x="73" y="79" width="23" height="14" rx="6" fill="#081828" opacity="0.88"/>
+            <rect x="75" y="81" width="19" height="10" rx="5" fill="url(#kg2)" opacity="0.9"/>
+            <path d="M77 84 Q82 81 87 83" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M96 85 Q100 83 104 85" stroke="#081828" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="104" y="79" width="23" height="14" rx="6" fill="#081828" opacity="0.88"/>
+            <rect x="106" y="81" width="19" height="10" rx="5" fill="url(#kg2)" opacity="0.9"/>
+            <path d="M108 84 Q113 81 118 83" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            <path d="M73 86 Q65 86 62 83" stroke="#081828" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M127 86 Q135 86 138 83" stroke="#081828" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M73 76 Q82 72 91 75" stroke="#6A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M109 75 Q118 72 127 76" stroke="#6A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <ellipse cx="100" cy="218" rx="70" ry="6" fill="rgba(0,0,0,0.18)"/>
+          <path d="M28 208 Q34 196 100 193 Q166 196 172 208 Q164 222 100 224 Q36 222 28 208Z" fill="url(#kboard)"/>
+          <path d="M44 200 Q72 194 100 193 Q128 194 156 200 Q140 197 100 197 Q60 197 44 200Z" fill="rgba(255,255,255,0.2)"/>
+          <path d="M98 224 Q95 231 93 230 Q95 225 98 224Z" fill="#991100"/>
+          <path d="M102 224 Q105 231 107 230 Q105 225 102 224Z" fill="#991100"/>
+        </svg>
+      </div>
+      <div>
+        <div class="eyebrow">IA · surf edition · image gen</div>
+        <div class="title">Kangourou</div>
+        <div class="sub">chat + génération + analyse d'images 🤙</div>
+        <div class="conv-title-display" id="conv-title-display">Nouvelle conversation</div>
+      </div>
     </div>
-    <div class="input-wrap">
-      <button class="upload-btn" onclick="document.getElementById('file-input').click()" title="Envoyer une image">📎</button>
-      <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
-      <textarea id="inp" placeholder="Écris un message ou envoie une image..." rows="1"></textarea>
-      <button class="send" id="btn">↑</button>
+
+    <div class="divider"></div>
+
+    <div class="chat" id="chat">
+      <div class="row-l">
+        <div class="lbl">🦘 Kangourou</div>
+        <div class="bub ai">Yo ! Je suis Kangourou 🦘 — je peux tchatter, générer des images ET analyser tes photos ! Clique sur 📎 pour envoyer une image 🎨🤙</div>
+      </div>
     </div>
-    <div class="hint">Entrée pour envoyer · Shift+Entrée pour nouvelle ligne</div>
+
+    <div class="lightbox hidden" id="lb" onclick="this.classList.add('hidden')">
+      <img id="lb-img" src="" alt="">
+    </div>
+
+    <div class="input-area">
+      <div class="preview-wrap hidden" id="preview-wrap">
+        <img class="preview-img-thumb" id="preview-img" src="" alt="">
+        <span class="preview-name" id="preview-name"></span>
+        <button class="preview-remove" onclick="removeImage()">✕</button>
+      </div>
+      <div class="input-wrap">
+        <button class="upload-btn" onclick="document.getElementById('file-input').click()" title="Envoyer une image">📎</button>
+        <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
+        <textarea id="inp" placeholder="Écris un message ou envoie une image..." rows="1"></textarea>
+        <button class="send" id="btn">↑</button>
+      </div>
+      <div class="hint">Entrée pour envoyer · Shift+Entrée pour nouvelle ligne</div>
+    </div>
   </div>
 </div>
 
 <script>
-const chat=document.getElementById('chat'),inp=document.getElementById('inp'),btn=document.getElementById('btn');
-let history=[],busy=false,pendingImageBase64=null,pendingImageType=null;
+// ===== CONVERSATIONS =====
+let conversations = JSON.parse(localStorage.getItem('kang_convs') || '[]');
+let currentConvId = null;
+let history = [], busy = false;
+let pendingImageBase64 = null, pendingImageType = null;
 
-inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,100)+'px'});
-inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-btn.addEventListener('click',send);
-function scroll(){chat.scrollTop=chat.scrollHeight}
+function saveConversations() {
+  localStorage.setItem('kang_convs', JSON.stringify(conversations));
+}
 
-function handleFile(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=(e)=>{
-    const result=e.target.result;
-    pendingImageBase64=result.split(',')[1];
-    pendingImageType=file.type;
-    document.getElementById('preview-img').src=result;
-    document.getElementById('preview-name').textContent=file.name;
+function newConversation() {
+  // Sauvegarder la conversation courante si elle a des messages
+  if (currentConvId && history.length > 0) {
+    const conv = conversations.find(c => c.id === currentConvId);
+    if (conv) { conv.messages = history; conv.updatedAt = Date.now(); saveConversations(); }
+  }
+  // Créer nouvelle conversation
+  const id = Date.now().toString();
+  const conv = { id, title: 'Nouvelle conversation', messages: [], createdAt: Date.now(), updatedAt: Date.now(), favorite: false };
+  conversations.unshift(conv);
+  saveConversations();
+  loadConversation(id);
+  renderSidebar();
+  closeMobileSidebar();
+}
+
+function loadConversation(id) {
+  currentConvId = id;
+  const conv = conversations.find(c => c.id === id);
+  if (!conv) return;
+  history = conv.messages || [];
+  document.getElementById('conv-title-display').textContent = conv.title;
+
+  // Vider le chat
+  const chat = document.getElementById('chat');
+  chat.innerHTML = '';
+
+  if (history.length === 0) {
+    addMsgToDOM('assistant', 'Yo ! Je suis Kangourou 🦘 — je peux tchatter, générer des images ET analyser tes photos ! 🎨🤙');
+  } else {
+    history.forEach(m => {
+      if (m.hasImage) addMsgWithImageToDOM(`data:${m.imageType};base64,${m.imageBase64}`, m.content);
+      else if (m.generatedImage) addGeneratedImageToDOM(m.imageUrl, m.prompt, m.content);
+      else addMsgToDOM(m.role, m.content);
+    });
+  }
+  renderSidebar();
+}
+
+function deleteConversation(id, e) {
+  e.stopPropagation();
+  conversations = conversations.filter(c => c.id !== id);
+  saveConversations();
+  if (currentConvId === id) {
+    if (conversations.length > 0) loadConversation(conversations[0].id);
+    else newConversation();
+  }
+  renderSidebar();
+}
+
+function toggleFavorite(id, e) {
+  e.stopPropagation();
+  const conv = conversations.find(c => c.id === id);
+  if (conv) { conv.favorite = !conv.favorite; saveConversations(); renderSidebar(); }
+}
+
+function updateConvTitle(firstMsg) {
+  if (!currentConvId) return;
+  const conv = conversations.find(c => c.id === currentConvId);
+  if (conv && conv.title === 'Nouvelle conversation') {
+    conv.title = firstMsg.slice(0, 35) + (firstMsg.length > 35 ? '…' : '');
+    document.getElementById('conv-title-display').textContent = conv.title;
+    saveConversations();
+    renderSidebar();
+  }
+}
+
+function renderSidebar() {
+  const recentList = document.getElementById('recent-list');
+  const favsList = document.getElementById('favs-list');
+  const favsSection = document.getElementById('favs-section');
+  const favConvs = conversations.filter(c => c.favorite);
+  const recentConvs = conversations.filter(c => !c.favorite);
+
+  favsSection.style.display = favConvs.length > 0 ? 'block' : 'none';
+
+  function renderItem(conv) {
+    const div = document.createElement('div');
+    div.className = 'conv-item' + (conv.id === currentConvId ? ' active' : '');
+    div.onclick = () => { loadConversation(conv.id); closeMobileSidebar(); };
+    div.innerHTML = `
+      <span class="conv-item-icon">💬</span>
+      <span class="conv-item-text">${conv.title}</span>
+      <div class="conv-item-actions">
+        <button class="conv-action-btn fav ${conv.favorite ? 'active' : ''}" onclick="toggleFavorite('${conv.id}',event)" title="Favori">⭐</button>
+        <button class="conv-action-btn" onclick="deleteConversation('${conv.id}',event)" title="Supprimer">🗑</button>
+      </div>`;
+    return div;
+  }
+
+  favsList.innerHTML = '';
+  favConvs.forEach(c => favsList.appendChild(renderItem(c)));
+  recentList.innerHTML = '';
+  recentConvs.forEach(c => recentList.appendChild(renderItem(c)));
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const btn = document.getElementById('toggle-btn');
+  sidebar.classList.toggle('collapsed');
+  btn.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+}
+
+function toggleMobileSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+}
+
+// ===== CHAT =====
+const inp = document.getElementById('inp'), btn = document.getElementById('btn');
+inp.addEventListener('input', () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 100) + 'px'; });
+inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+btn.addEventListener('click', send);
+function scroll() { document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight; }
+
+function handleFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const result = e.target.result;
+    pendingImageBase64 = result.split(',')[1]; pendingImageType = file.type;
+    document.getElementById('preview-img').src = result;
+    document.getElementById('preview-name').textContent = file.name;
     document.getElementById('preview-wrap').classList.remove('hidden');
   };
-  reader.readAsDataURL(file);
-  input.value='';
+  reader.readAsDataURL(file); input.value = '';
 }
 
-function removeImage(){
-  pendingImageBase64=null;pendingImageType=null;
+function removeImage() {
+  pendingImageBase64 = null; pendingImageType = null;
   document.getElementById('preview-wrap').classList.add('hidden');
-  document.getElementById('preview-img').src='';
+  document.getElementById('preview-img').src = '';
 }
 
-function addMsg(role,text){
-  const row=document.createElement('div');row.className=role==='assistant'?'row-l':'row-r';
-  const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent=role==='assistant'?'🦘 Kangourou':'Toi';
-  const bub=document.createElement('div');bub.className='bub '+(role==='assistant'?'ai':'me');bub.textContent=text;
-  row.appendChild(lbl);row.appendChild(bub);chat.appendChild(row);scroll();
+function addMsgToDOM(role, text) {
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div'); row.className = role === 'assistant' ? 'row-l' : 'row-r';
+  const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = role === 'assistant' ? '🦘 Kangourou' : 'Toi';
+  const bub = document.createElement('div'); bub.className = 'bub ' + (role === 'assistant' ? 'ai' : 'me'); bub.textContent = text;
+  row.appendChild(lbl); row.appendChild(bub); chat.appendChild(row); scroll();
 }
 
-function addMsgWithImage(imgSrc,text){
-  const row=document.createElement('div');row.className='row-r';
-  const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent='Toi';
-  const wrap=document.createElement('div');
-  wrap.style.cssText='display:flex;flex-direction:column;align-items:flex-end;gap:6px';
-  const img=document.createElement('img');img.src=imgSrc;img.className='sent-img';
-  img.onclick=()=>{document.getElementById('lb-img').src=imgSrc;document.getElementById('lb').classList.remove('hidden')};
+function addMsgWithImageToDOM(imgSrc, text) {
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div'); row.className = 'row-r';
+  const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = 'Toi';
+  const wrap = document.createElement('div'); wrap.style.cssText = 'display:flex;flex-direction:column;align-items:flex-end;gap:6px';
+  const img = document.createElement('img'); img.src = imgSrc; img.className = 'sent-img';
+  img.onclick = () => { document.getElementById('lb-img').src = imgSrc; document.getElementById('lb').classList.remove('hidden'); };
   wrap.appendChild(img);
-  if(text){const bub=document.createElement('div');bub.className='bub me';bub.textContent=text;wrap.appendChild(bub)}
-  row.appendChild(lbl);row.appendChild(wrap);chat.appendChild(row);scroll();
+  if (text) { const bub = document.createElement('div'); bub.className = 'bub me'; bub.textContent = text; wrap.appendChild(bub); }
+  row.appendChild(lbl); row.appendChild(wrap); chat.appendChild(row); scroll();
 }
 
-function addTyping(){
-  const row=document.createElement('div');row.className='row-l';
-  const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent='🦘 Kangourou';
-  const t=document.createElement('div');t.className='typing';
-  for(let i=0;i<3;i++){const d=document.createElement('span');d.className='dot';d.style.animationDelay=(i*.2)+'s';t.appendChild(d)}
-  row.appendChild(lbl);row.appendChild(t);chat.appendChild(row);scroll();return row;
+function addGeneratedImageToDOM(url, prompt, message) {
+  addMsgToDOM('assistant', message);
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div'); row.className = 'row-l';
+  const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = '🦘 Kangourou';
+  const wrap = document.createElement('div');
+  const img = document.createElement('img'); img.className = 'gen-img'; img.src = url;
+  img.onclick = () => { document.getElementById('lb-img').src = url; document.getElementById('lb').classList.remove('hidden'); };
+  const cap = document.createElement('div'); cap.className = 'img-cap'; cap.textContent = prompt.length > 70 ? prompt.slice(0, 70) + '…' : prompt;
+  wrap.appendChild(img); wrap.appendChild(cap);
+  row.appendChild(lbl); row.appendChild(wrap); chat.appendChild(row); scroll();
 }
 
-function addImage(prompt,message){
-  addMsg('assistant',message);
-  const row=document.createElement('div');row.className='row-l';
-  const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent='🦘 Kangourou';
-  const wrap=document.createElement('div');
-  const loader=document.createElement('div');loader.className='img-loading';
-  loader.innerHTML='<span class="spin">🌊</span><span>Génération en cours...</span>';
-  wrap.appendChild(loader);row.appendChild(lbl);row.appendChild(wrap);chat.appendChild(row);scroll();
-  const seed=Math.floor(Math.random()*999999);
-  const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1024&height=1024&seed='+seed+'&nologo=true&model=flux';
-  const img=document.createElement('img');img.className='gen-img';
-  img.onload=()=>{loader.remove();wrap.appendChild(img);const cap=document.createElement('div');cap.className='img-cap';cap.textContent=prompt.length>70?prompt.slice(0,70)+'…':prompt;wrap.appendChild(cap);scroll()};
-  img.onerror=()=>{loader.textContent='❌ Erreur de génération'};
-  img.onclick=()=>{document.getElementById('lb-img').src=url;document.getElementById('lb').classList.remove('hidden')};
-  img.src=url;
+function addTyping() {
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div'); row.className = 'row-l';
+  const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = '🦘 Kangourou';
+  const t = document.createElement('div'); t.className = 'typing';
+  for (let i = 0; i < 3; i++) { const d = document.createElement('span'); d.className = 'dot'; d.style.animationDelay = (i * .2) + 's'; t.appendChild(d); }
+  row.appendChild(lbl); row.appendChild(t); chat.appendChild(row); scroll(); return row;
 }
 
-async function send(){
-  const text=inp.value.trim();
-  if((!text&&!pendingImageBase64)||busy)return;
-  busy=true;btn.disabled=true;inp.value='';inp.style.height='auto';
-  const hasImage=!!pendingImageBase64;
-  const imgBase64=pendingImageBase64,imgType=pendingImageType;
-  const imgSrc=hasImage?`data:${imgType};base64,${imgBase64}`:null;
-  if(hasImage)addMsgWithImage(imgSrc,text);else addMsg('user',text);
-  const userMsg=hasImage?{role:'user',content:text||'Analyse cette image',hasImage:true,imageBase64:imgBase64,imageType:imgType}:{role:'user',content:text};
+function addImageAnimation(prompt, message) {
+  addMsgToDOM('assistant', message);
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div'); row.className = 'row-l';
+  const lbl = document.createElement('div'); lbl.className = 'lbl'; lbl.textContent = '🦘 Kangourou';
+  const wrap = document.createElement('div');
+  const loader = document.createElement('div'); loader.className = 'img-loading';
+  loader.innerHTML = '<span class="spin">🌊</span><span>Génération en cours...</span>';
+  wrap.appendChild(loader); row.appendChild(lbl); row.appendChild(wrap); chat.appendChild(row); scroll();
+  const seed = Math.floor(Math.random() * 999999);
+  const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=1024&height=1024&seed=' + seed + '&nologo=true&model=flux';
+  const img = document.createElement('img'); img.className = 'gen-img';
+  img.onload = () => {
+    loader.remove(); wrap.appendChild(img);
+    const cap = document.createElement('div'); cap.className = 'img-cap'; cap.textContent = prompt.length > 70 ? prompt.slice(0, 70) + '…' : prompt;
+    wrap.appendChild(cap); scroll();
+  };
+  img.onerror = () => { loader.textContent = '❌ Erreur de génération'; };
+  img.onclick = () => { document.getElementById('lb-img').src = url; document.getElementById('lb').classList.remove('hidden'); };
+  img.src = url;
+}
+
+async function send() {
+  const text = inp.value.trim();
+  if ((!text && !pendingImageBase64) || busy) return;
+  busy = true; btn.disabled = true; inp.value = ''; inp.style.height = 'auto';
+
+  const hasImage = !!pendingImageBase64;
+  const imgBase64 = pendingImageBase64, imgType = pendingImageType;
+  const imgSrc = hasImage ? `data:${imgType};base64,${imgBase64}` : null;
+
+  if (hasImage) addMsgWithImageToDOM(imgSrc, text);
+  else addMsgToDOM('user', text);
+
+  const userMsg = hasImage
+    ? { role: 'user', content: text || 'Analyse cette image', hasImage: true, imageBase64: imgBase64, imageType: imgType }
+    : { role: 'user', content: text };
+
   history.push(userMsg);
+  if (history.length === 1) updateConvTitle(text || 'Image envoyée');
   removeImage();
-  const typing=addTyping();
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history})});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    const raw=data.reply||'...';
+
+  const typing = addTyping();
+  try {
+    const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history }) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const raw = data.reply || '...';
     typing.remove();
-    let parsed=null;
-    try{const m=raw.match(/\{[^{}]*"action"\s*:\s*"generate_image"[^{}]*\}/s);if(m)parsed=JSON.parse(m[0])}catch(e){}
-    if(parsed?.action==='generate_image'){
-      history.push({role:'assistant',content:parsed.message||'Image en cours!'});
-      addImage(parsed.prompt,parsed.message||'Voilà ce que je génère pour toi 🎨');
-    }else{
-      history.push({role:'assistant',content:raw});addMsg('assistant',raw);
+
+    let parsed = null;
+    try { const m = raw.match(/\{[^{}]*"action"\s*:\s*"generate_image"[^{}]*\}/s); if (m) parsed = JSON.parse(m[0]); } catch (e) { }
+
+    if (parsed?.action === 'generate_image') {
+      history.push({ role: 'assistant', content: parsed.message || 'Image en cours!', generatedImage: true, imageUrl: 'https://image.pollinations.ai/prompt/' + encodeURIComponent(parsed.prompt), prompt: parsed.prompt });
+      addImageAnimation(parsed.prompt, parsed.message || 'Voilà ce que je génère 🎨');
+    } else {
+      history.push({ role: 'assistant', content: raw });
+      addMsgToDOM('assistant', raw);
     }
-  }catch(e){
+
+    // Sauvegarder
+    const conv = conversations.find(c => c.id === currentConvId);
+    if (conv) { conv.messages = history; conv.updatedAt = Date.now(); saveConversations(); }
+
+  } catch (e) {
     typing.remove();
-    const err=document.createElement('div');err.className='err';err.textContent='Erreur: '+e.message;
-    chat.appendChild(err);scroll();
+    const err = document.createElement('div'); err.className = 'err'; err.textContent = 'Erreur: ' + e.message;
+    document.getElementById('chat').appendChild(err); scroll();
   }
-  busy=false;btn.disabled=false;inp.focus();
+  busy = false; btn.disabled = false; inp.focus();
 }
+
+// ===== INIT =====
+if (conversations.length === 0) newConversation();
+else { loadConversation(conversations[0].id); renderSidebar(); }
 </script>
 </body>
 </html>
