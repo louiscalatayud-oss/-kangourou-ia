@@ -11,10 +11,20 @@ Quand l'utilisateur demande de generer/creer/dessiner une image, reponds UNIQUEM
 {"action":"generate_image","prompt":"<prompt en anglais tres detaille>","message":"<commentaire sympa en français>"}
 Sinon reponds normalement en texte.`;
 
-    const geminiMessages = messages.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
+    const geminiMessages = [
+      {
+        role: 'user',
+        parts: [{ text: system }]
+      },
+      {
+        role: 'model',
+        parts: [{ text: 'Compris ! Je suis Kangourou, pret a surfer les vagues de la connaissance !' }]
+      },
+      ...messages.map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+      }))
+    ];
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
@@ -22,8 +32,11 @@ Sinon reponds normalement en texte.`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: system }] },
-          contents: geminiMessages
+          contents: geminiMessages,
+          generationConfig: {
+            maxOutputTokens: 1000,
+            temperature: 0.7
+          }
         })
       }
     );
