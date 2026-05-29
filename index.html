@@ -27,9 +27,7 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 .wl svg{width:100%;height:100%}
 .wl1{animation:wave1 8s linear infinite;opacity:.5}
 .wl2{animation:wave2 12s linear infinite;opacity:.35}
-
 .main{width:100%;max-width:680px;height:100vh;display:flex;flex-direction:column;position:relative;z-index:2}
-
 .hero{display:flex;align-items:center;gap:16px;padding:18px 24px 12px;flex-shrink:0}
 .kang-wrap{width:100px;height:120px;flex-shrink:0;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(126,232,250,.35))}
 .kang-body-group{transform-origin:50% 80%;animation:sway 3s ease-in-out infinite}
@@ -42,9 +40,7 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 .title{font-size:28px;font-weight:800;color:#fff;text-shadow:0 2px 12px rgba(126,232,250,.4);line-height:1}
 .sub{font-size:11px;color:rgba(200,240,255,.5);margin-top:4px}
 .badge{display:inline-flex;align-items:center;background:rgba(126,232,250,.1);border:1px solid rgba(126,232,250,.2);border-radius:20px;padding:2px 10px;font-size:9px;color:#7ee8fa;margin-top:5px}
-
 .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(126,232,250,.3),transparent);flex-shrink:0}
-
 .chat{flex:1;padding:16px 24px 0;display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:0}
 .row-l{display:flex;flex-direction:column;align-items:flex-start;animation:kfade .3s ease forwards}
 .row-r{display:flex;flex-direction:column;align-items:flex-end;animation:kfade .3s ease forwards}
@@ -59,29 +55,35 @@ body{height:100vh;overflow:hidden;background:linear-gradient(180deg,#0a2744 0%,#
 .gen-img{max-width:280px;border-radius:12px;cursor:zoom-in;border:1px solid rgba(126,232,250,.3);box-shadow:0 4px 20px rgba(0,0,0,.4)}
 .img-cap{font-size:11px;color:rgba(200,240,255,.4);font-style:italic;margin-top:5px}
 .err{font-size:12px;color:#ffb0b0;text-align:center;padding:6px}
-
+.sent-img{max-width:200px;border-radius:10px;border:1px solid rgba(126,232,250,.3);margin-bottom:4px;display:block;cursor:zoom-in}
+.preview-wrap{display:flex;align-items:center;gap:8px;background:rgba(126,232,250,.08);border:1px solid rgba(126,232,250,.2);border-radius:10px;padding:6px 10px;margin-bottom:6px}
+.preview-wrap.hidden{display:none}
+.preview-img{width:40px;height:40px;object-fit:cover;border-radius:6px}
+.preview-name{font-size:11px;color:rgba(200,240,255,.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.preview-remove{background:none;border:none;color:rgba(200,240,255,.5);cursor:pointer;font-size:16px;padding:0 4px}
+.preview-remove:hover{color:#ffb0b0}
 .input-area{padding:14px 24px 24px;flex-shrink:0}
-.input-wrap{display:flex;align-items:flex-end;gap:10px;background:rgba(10,40,80,.65);border:1px solid rgba(126,232,250,.25);border-radius:16px;padding:11px 14px;transition:border-color .2s}
+.input-wrap{display:flex;align-items:flex-end;gap:8px;background:rgba(10,40,80,.65);border:1px solid rgba(126,232,250,.25);border-radius:16px;padding:11px 14px;transition:border-color .2s}
 .input-wrap:focus-within{border-color:rgba(126,232,250,.5)}
 textarea{flex:1;background:transparent;border:none;outline:none;color:#e0f4ff;font-family:'Nunito',sans-serif;font-size:14px;line-height:1.5;resize:none;min-height:20px;max-height:100px}
 textarea::placeholder{color:rgba(126,232,250,.35)}
+.upload-btn{flex-shrink:0;background:none;border:1px solid rgba(126,232,250,.25);color:rgba(126,232,250,.6);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;transition:all .2s;margin-bottom:1px;display:flex;align-items:center;justify-content:center}
+.upload-btn:hover{background:rgba(126,232,250,.1);border-color:rgba(126,232,250,.5);color:#7ee8fa}
+#file-input{display:none}
 .send{flex-shrink:0;background:linear-gradient(135deg,#1a8fb5,#0aa5c0);border:none;color:#fff;width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;transition:all .2s;box-shadow:0 2px 10px rgba(10,165,192,.4);margin-bottom:1px}
 .send:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(10,165,192,.6)}
 .send:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
 .hint{text-align:center;margin-top:8px;font-size:10px;color:rgba(126,232,250,.2);letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace}
-
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:1000;cursor:zoom-out;padding:24px}
 .lightbox.hidden{display:none}
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:12px}
 </style>
 </head>
 <body>
-
 <div class="waves-wrap">
   <div class="wl wl1"><svg viewBox="0 0 1440 130" preserveAspectRatio="none"><path d="M0,60 C180,95 360,25 540,60 C720,95 900,25 1080,60 C1260,95 1440,25 1440,60 L1440,130 L0,130Z" fill="rgba(126,232,250,0.09)"/></svg></div>
   <div class="wl wl2"><svg viewBox="0 0 1440 130" preserveAspectRatio="none"><path d="M0,80 C200,50 400,110 600,80 C800,50 1000,110 1200,80 C1320,60 1400,90 1440,80 L1440,130 L0,130Z" fill="rgba(10,165,192,0.11)"/></svg></div>
 </div>
-
 <div class="main">
   <div class="hero">
     <div class="kang-wrap">
@@ -97,23 +99,18 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
           <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
           <path d="M86 152 Q80 165 76 174 Q73 181 74 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
           <path d="M63 188 Q56 186 52 191 Q48 196 50 200 Q54 205 62 203 Q70 201 74 195 Q75 189 69 187Z" fill="#B06018"/>
-          <line x1="52" y1="192" x2="45" y2="188" stroke="#7A4010" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="53" y1="197" x2="46" y2="195" stroke="#7A4010" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#C07018" stroke-width="11" stroke-linecap="round" fill="none"/>
           <path d="M114 152 Q120 165 124 174 Q127 181 126 191" stroke="#D48C28" stroke-width="9" stroke-linecap="round" fill="none"/>
           <path d="M137 188 Q144 186 148 191 Q152 196 150 200 Q146 205 138 203 Q130 201 126 195 Q125 189 131 187Z" fill="#B06018"/>
-          <line x1="148" y1="192" x2="155" y2="188" stroke="#7A4010" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="147" y1="197" x2="154" y2="195" stroke="#7A4010" stroke-width="1.5" stroke-linecap="round"/>
           <ellipse cx="100" cy="130" rx="34" ry="41" fill="url(#kg1)"/>
           <ellipse cx="99" cy="133" rx="22" ry="28" fill="url(#kb1)" opacity="0.88"/>
           <g class="kang-arm-l" style="transform-origin:70px 118px">
             <path d="M70 118 Q54 106 46 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
             <path d="M70 118 Q54 106 46 92" stroke="#D48C28" stroke-width="10" stroke-linecap="round" fill="none"/>
             <ellipse cx="42" cy="87" rx="10" ry="9" fill="#C87828"/>
-            <path d="M35 82 Q31 74 33 69 Q37 68 37 74 Q37 79 35 82Z" fill="#C07018"/>
-            <path d="M41 80 Q38 72 41 67 Q45 67 44 73 Q44 78 41 80Z" fill="#C07018"/>
-            <path d="M48 81 Q46 73 50 68 Q54 69 52 75 Q51 79 48 81Z" fill="#C07018"/>
-            <path d="M34 89 Q27 91 26 86 Q27 81 34 83Z" fill="#C87828"/>
+            <path d="M35 82 Q31 74 33 69 Q37 68 37 74Z" fill="#C07018"/>
+            <path d="M41 80 Q38 72 41 67 Q45 67 44 73Z" fill="#C07018"/>
+            <path d="M48 81 Q46 73 50 68 Q54 69 52 75Z" fill="#C07018"/>
           </g>
           <g class="kang-arm-r" style="transform-origin:130px 118px">
             <path d="M130 118 Q146 106 154 92" stroke="#C07018" stroke-width="12" stroke-linecap="round" fill="none"/>
@@ -123,7 +120,7 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
             <path d="M158 80 Q156 73 159 68 Q162 73 161 80Z" fill="#A86018"/>
             <path d="M163 81 Q162 74 166 70 Q168 74 166 81Z" fill="#A86018"/>
             <path d="M165 89 Q172 87 173 82 Q171 77 165 80Z" fill="#D48C28"/>
-            <path d="M151 83 Q147 75 149 69 Q153 68 153 74 Q153 79 151 83Z" fill="#D48C28"/>
+            <path d="M151 83 Q147 75 149 69 Q153 68 153 74Z" fill="#D48C28"/>
           </g>
         </g>
         <g class="kang-head-group" style="transform-origin:100px 95px">
@@ -139,17 +136,14 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
           <path d="M83 98 Q100 94 117 98 Q122 108 116 118 Q108 125 100 126 Q92 125 84 118 Q78 108 83 98Z" fill="url(#kb1)"/>
           <path d="M93 95 Q100 89 107 95 Q107 103 100 106 Q93 103 93 95Z" fill="#2A1005"/>
           <path d="M94 96 Q100 91 106 96 Q106 103 100 105 Q94 103 94 96Z" fill="#4A2010"/>
-          <ellipse cx="97" cy="93" rx="2" ry="1.5" fill="rgba(255,255,255,0.3)"/>
           <line x1="100" y1="105" x2="100" y2="111" stroke="#7A3808" stroke-width="1.2" stroke-linecap="round"/>
           <path d="M91 113 Q100 119 109 113" stroke="#7A3808" stroke-width="2" fill="none" stroke-linecap="round"/>
           <ellipse cx="84" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
           <circle cx="85" cy="85" r="5.5" fill="#1A0E00"/>
-          <circle cx="85" cy="85" r="4.5" fill="#3A2000"/>
           <circle cx="85" cy="85" r="3" fill="#080300"/>
           <circle cx="87" cy="83" r="2" fill="white" opacity="0.9"/>
           <ellipse cx="116" cy="84" rx="9" ry="8" fill="white" stroke="#B07018" stroke-width="1"/>
           <circle cx="115" cy="85" r="5.5" fill="#1A0E00"/>
-          <circle cx="115" cy="85" r="4.5" fill="#3A2000"/>
           <circle cx="115" cy="85" r="3" fill="#080300"/>
           <circle cx="117" cy="83" r="2" fill="white" opacity="0.9"/>
           <rect x="73" y="79" width="23" height="14" rx="6" fill="#081828" opacity="0.88"/>
@@ -174,27 +168,30 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
     <div>
       <div class="eyebrow">IA · surf edition · image gen</div>
       <div class="title">Kangourou</div>
-      <div class="sub">chat + génération d'images 🤙</div>
+      <div class="sub">chat + génération + analyse d'images 🤙</div>
       <div class="badge">✨ Images gratuites — sans token</div>
     </div>
   </div>
-
   <div class="divider"></div>
-
   <div class="chat" id="chat">
     <div class="row-l">
       <div class="lbl">🦘 Kangourou</div>
-      <div class="bub ai">Yo ! Je suis Kangourou 🦘 — je peux tchatter ET générer des images gratuitement ! Quelle vague on attrape aujourd'hui ? 🎨🤙</div>
+      <div class="bub ai">Yo ! Je suis Kangourou 🦘 — je peux tchatter, générer des images ET analyser tes photos ! Clique sur 📎 pour envoyer une image 🎨🤙</div>
     </div>
   </div>
-
   <div class="lightbox hidden" id="lb" onclick="this.classList.add('hidden')">
     <img id="lb-img" src="" alt="">
   </div>
-
   <div class="input-area">
+    <div class="preview-wrap hidden" id="preview-wrap">
+      <img class="preview-img" id="preview-img" src="" alt="">
+      <span class="preview-name" id="preview-name"></span>
+      <button class="preview-remove" onclick="removeImage()">✕</button>
+    </div>
     <div class="input-wrap">
-      <textarea id="inp" placeholder="Ecris ou demande une image... ex: génère un coucher de soleil" rows="1"></textarea>
+      <button class="upload-btn" onclick="document.getElementById('file-input').click()" title="Envoyer une image">📎</button>
+      <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
+      <textarea id="inp" placeholder="Écris un message ou envoie une image..." rows="1"></textarea>
       <button class="send" id="btn">↑</button>
     </div>
     <div class="hint">Entrée pour envoyer · Shift+Entrée pour nouvelle ligne</div>
@@ -202,27 +199,52 @@ textarea::placeholder{color:rgba(126,232,250,.35)}
 </div>
 
 <script>
-const SYSTEM=`Tu es Kangourou, une IA surf-vibes. Tu reponds en français avec energie et bonne humeur.
-Quand l'utilisateur demande de generer/creer/dessiner une image, reponds UNIQUEMENT avec ce JSON (rien d'autre) :
-{"action":"generate_image","prompt":"<prompt en anglais tres detaille>","message":"<commentaire sympa en français>"}
-Sinon reponds normalement en texte.`;
-
-const chat=document.getElementById('chat');
-const inp=document.getElementById('inp');
-const btn=document.getElementById('btn');
-let history=[],busy=false;
+const chat=document.getElementById('chat'),inp=document.getElementById('inp'),btn=document.getElementById('btn');
+let history=[],busy=false,pendingImageBase64=null,pendingImageType=null;
 
 inp.addEventListener('input',()=>{inp.style.height='auto';inp.style.height=Math.min(inp.scrollHeight,100)+'px'});
 inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
 btn.addEventListener('click',send);
-
 function scroll(){chat.scrollTop=chat.scrollHeight}
+
+function handleFile(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    const result=e.target.result;
+    pendingImageBase64=result.split(',')[1];
+    pendingImageType=file.type;
+    document.getElementById('preview-img').src=result;
+    document.getElementById('preview-name').textContent=file.name;
+    document.getElementById('preview-wrap').classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+  input.value='';
+}
+
+function removeImage(){
+  pendingImageBase64=null;pendingImageType=null;
+  document.getElementById('preview-wrap').classList.add('hidden');
+  document.getElementById('preview-img').src='';
+}
 
 function addMsg(role,text){
   const row=document.createElement('div');row.className=role==='assistant'?'row-l':'row-r';
   const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent=role==='assistant'?'🦘 Kangourou':'Toi';
   const bub=document.createElement('div');bub.className='bub '+(role==='assistant'?'ai':'me');bub.textContent=text;
   row.appendChild(lbl);row.appendChild(bub);chat.appendChild(row);scroll();
+}
+
+function addMsgWithImage(imgSrc,text){
+  const row=document.createElement('div');row.className='row-r';
+  const lbl=document.createElement('div');lbl.className='lbl';lbl.textContent='Toi';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;flex-direction:column;align-items:flex-end;gap:6px';
+  const img=document.createElement('img');img.src=imgSrc;img.className='sent-img';
+  img.onclick=()=>{document.getElementById('lb-img').src=imgSrc;document.getElementById('lb').classList.remove('hidden')};
+  wrap.appendChild(img);
+  if(text){const bub=document.createElement('div');bub.className='bub me';bub.textContent=text;wrap.appendChild(bub)}
+  row.appendChild(lbl);row.appendChild(wrap);chat.appendChild(row);scroll();
 }
 
 function addTyping(){
@@ -244,28 +266,26 @@ function addImage(prompt,message){
   const seed=Math.floor(Math.random()*999999);
   const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1024&height=1024&seed='+seed+'&nologo=true&model=flux';
   const img=document.createElement('img');img.className='gen-img';
-  img.onload=()=>{
-    loader.remove();wrap.appendChild(img);
-    const cap=document.createElement('div');cap.className='img-cap';
-    cap.textContent=prompt.length>70?prompt.slice(0,70)+'…':prompt;
-    wrap.appendChild(cap);scroll();
-  };
+  img.onload=()=>{loader.remove();wrap.appendChild(img);const cap=document.createElement('div');cap.className='img-cap';cap.textContent=prompt.length>70?prompt.slice(0,70)+'…':prompt;wrap.appendChild(cap);scroll()};
   img.onerror=()=>{loader.textContent='❌ Erreur de génération'};
   img.onclick=()=>{document.getElementById('lb-img').src=url;document.getElementById('lb').classList.remove('hidden')};
   img.src=url;
 }
 
 async function send(){
-  const text=inp.value.trim();if(!text||busy)return;
+  const text=inp.value.trim();
+  if((!text&&!pendingImageBase64)||busy)return;
   busy=true;btn.disabled=true;inp.value='';inp.style.height='auto';
-  history.push({role:'user',content:text});addMsg('user',text);
+  const hasImage=!!pendingImageBase64;
+  const imgBase64=pendingImageBase64,imgType=pendingImageType;
+  const imgSrc=hasImage?`data:${imgType};base64,${imgBase64}`:null;
+  if(hasImage)addMsgWithImage(imgSrc,text);else addMsg('user',text);
+  const userMsg=hasImage?{role:'user',content:text||'Analyse cette image',hasImage:true,imageBase64:imgBase64,imageType:imgType}:{role:'user',content:text};
+  history.push(userMsg);
+  removeImage();
   const typing=addTyping();
   try{
-    const res=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:history})
-    });
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history})});
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     const raw=data.reply||'...';
